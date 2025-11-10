@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ExampleChart from "../components/ExampleChart";
 import { useStore } from "../store/useStore";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+const API_BASE_URL = "http://localhost:3000";
 
 function Home() {
   const { count, increment, decrement } = useStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/employee-properties?employeeId=6911fcc672330d3274ea06c7&city=STEIN`
+      );
+      console.log("first", response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background p-8">
