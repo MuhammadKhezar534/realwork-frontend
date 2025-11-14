@@ -2,68 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import { useGetStats } from "@/hooks/useGetStats";
 import { compareChange } from "@/utils/fun";
+import { useAuth } from "@/contexts/AuthContext";
 import PropertyStatusChart from "@/components/properties/PieCHart";
 import RevenueComparisonChart from "@/components/properties/RevenueComparisonChart";
-
-const monthlyRevenueData = [
-  { month: "Q1", revenue: 400000 },
-  { month: "Q2", revenue: 450000 },
-  { month: "Q3", revenue: 500000 },
-  { month: "Q4", revenue: 550000 },
-];
-
-const employeePerformanceData = [
-  { name: "Employee A", revenue: 250000 },
-  { name: "Employee B", revenue: 180000 },
-  { name: "Employee C", revenue: 220000 },
-  { name: "Employee D", revenue: 190000 },
-];
-
-const cityDistributionData = [
-  { city: "Amsterdam", properties: 45 },
-  { city: "Rotterdam", properties: 32 },
-  { city: "Utrecht", properties: 28 },
-  { city: "The Hague", properties: 25 },
-];
-
-const trendData = [
-  { month: "Jan", value: 100 },
-  { month: "Feb", value: 115 },
-  { month: "Mar", value: 130 },
-  { month: "Apr", value: 145 },
-  { month: "May", value: 160 },
-  { month: "Jun", value: 175 },
-];
-
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#A020F0",
-  "#FF6B6B",
-  "#FF0000",
-  "#00FF00",
-];
+import RealtorPerformanceMetric from "@/components/properties/RealtorPerformanceMetric";
+import Loader from "@/components/common/Loader";
+import Amount from "@/components/common/Amount";
+import { useFetchSaveProperties } from "@/hooks/useFetchSaveProperties";
 
 const formatCityName = (city) => {
   if (!city) return "";
@@ -72,8 +19,19 @@ const formatCityName = (city) => {
 
 function Home() {
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const {
+    fetchAndSave,
+    loading: fetchingProperties,
+    isFetchUpdatedData,
+  } = useFetchSaveProperties();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
 
   const {
     employees,
@@ -84,8 +42,11 @@ function Home() {
     employeePropertiesData,
     error: _error,
     mergeData,
-  } = useGetStats(selectedEmployee, selectedCity);
+  } = useGetStats(selectedEmployee, selectedCity, isFetchUpdatedData);
 
+  const handleFetchLatestData = async () => {
+    await fetchAndSave();
+  };
   console.log({
     verifiedRevenueData,
     plannedRevenueData,
@@ -96,19 +57,43 @@ function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        <div className="flex justify-end gap-3 mb-6">
-          <Button
-            onClick={() => navigate("/employees")}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
-          >
-            Employees
-          </Button>
-          <Button
-            onClick={() => navigate("/commission")}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
-          >
-            Commission
-          </Button>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+            {user && (
+              <p className="text-sm text-gray-600 mt-1">
+                Welcome, {user.username}
+              </p>
+            )}
+          </div>
+          <div className="flex gap-3">
+            <Button
+              onClick={handleFetchLatestData}
+              disabled={fetchingProperties}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {fetchingProperties ? "Fetching..." : "Get Latest Data"}
+            </Button>
+            <Button
+              onClick={() => navigate("/employees")}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
+            >
+              Employees
+            </Button>
+            <Button
+              onClick={() => navigate("/commission")}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
+            >
+              Commission
+            </Button>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="border-red-300 text-red-600 hover:bg-red-50 shadow-md hover:shadow-lg transition-all duration-200"
+            >
+              Logout
+            </Button>
+          </div>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
@@ -158,7 +143,11 @@ function Home() {
                   Total Verified Revenue
                 </p>
                 <p className="text-3xl font-bold">
-                  {verifiedRevenueData?.data?.currentMonth?.revenue}
+                  <Amount
+                    amount={
+                      verifiedRevenueData?.data?.currentMonth?.revenue || 0
+                    }
+                  />
                 </p>
               </div>
               <div className="bg-white/20 rounded-lg p-3">
@@ -186,7 +175,9 @@ function Home() {
                   Planned Revenue
                 </p>
                 <p className="text-3xl font-bold">
-                  {plannedRevenueData?.data?.totalPlannedRevenue}
+                  <Amount
+                    amount={plannedRevenueData?.data?.totalPlannedRevenue || 0}
+                  />
                 </p>
               </div>
               <div className="bg-white/20 rounded-lg p-3">
@@ -214,7 +205,9 @@ function Home() {
                   Pipeline Total Value
                 </p>
                 <p className="text-3xl font-bold">
-                  {plannedRevenueData?.pipelineTotalValue}
+                  <Amount
+                    amount={plannedRevenueData?.pipelineTotalValue || 0}
+                  />
                 </p>
               </div>
               <div className="bg-white/20 rounded-lg p-3">
@@ -287,6 +280,15 @@ function Home() {
             />
           </div>
 
+          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 lg:col-span-2">
+            <h3 className="text-lg font-semibold text-slate-800 mb-4">
+              Realtor Performance Metric
+            </h3>
+            <RealtorPerformanceMetric
+              data={employeePropertiesData?.data || []}
+            />
+          </div>
+
           {/* <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
             <h3 className="text-lg font-semibold text-slate-800 mb-4">
               Property Status Distribution
@@ -320,133 +322,9 @@ function Home() {
               </PieChart>
             </ResponsiveContainer>
           </div> */}
-
-          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">
-              Quarterly Revenue Trend
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={monthlyRevenueData}>
-                <defs>
-                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="month" stroke="#64748b" />
-                <YAxis stroke="#64748b" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#fff",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#6366f1"
-                  fillOpacity={1}
-                  fill="url(#colorRevenue)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">
-              Employee Performance
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={employeePerformanceData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" stroke="#64748b" />
-                <YAxis stroke="#64748b" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#fff",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Bar dataKey="revenue" fill="#6366f1" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">
-              Properties by City
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={cityDistributionData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis type="number" stroke="#64748b" />
-                <YAxis dataKey="city" type="category" stroke="#64748b" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#fff",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Bar
-                  dataKey="properties"
-                  fill="#10b981"
-                  radius={[0, 8, 8, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">
-              Revenue Growth Trend
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={trendData}>
-                <defs>
-                  <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="month" stroke="#64748b" />
-                <YAxis stroke="#64748b" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#fff",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#10b981"
-                  strokeWidth={3}
-                  fillOpacity={1}
-                  fill="url(#colorGrowth)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
         </div>
 
-        {loading && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 shadow-xl">
-              <div className="flex items-center gap-3">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
-                <span className="text-slate-700 font-medium">
-                  Loading data...
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
+        {(loading || fetchingProperties) && <Loader />}
       </div>
     </div>
   );

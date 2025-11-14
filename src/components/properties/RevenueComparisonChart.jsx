@@ -11,9 +11,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { processRevenueDataForChart } from "@/utils/fun";
+import { useStore } from "@/store/useStore";
 
 const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
   const navigate = useNavigate();
+  const { setProperties } = useStore();
 
   if (!Array.isArray(verifiedArray)) verifiedArray = [];
   if (!Array.isArray(plannedArray)) plannedArray = [];
@@ -24,11 +26,14 @@ const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
     if (!data || !data.fullMonthName || !data.year) return;
 
     const revenue = revenueType === "verified" ? data.verified : data.planned;
+    const properties =
+      revenueType === "verified" ? data.verifiedData : data.plannedData;
 
     if (revenue && revenue > 0) {
-      const monthName = data.fullMonthName;
-      const year = data.year;
-      navigate(`/revenue/${revenueType}/${year}/${monthName}`);
+      if (Array.isArray(properties) && properties.length > 0) {
+        setProperties(properties);
+        navigate("/view-properties");
+      }
     }
   };
 
@@ -88,30 +93,56 @@ const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
     );
   };
 
+  const formatAmountString = (amount) => {
+    if (amount === null || amount === undefined || isNaN(amount)) {
+      return "€0";
+    }
+    const numAmount = typeof amount === "string" ? parseFloat(amount) : amount;
+    if (isNaN(numAmount)) {
+      return "€0";
+    }
+    if (Math.abs(numAmount) >= 1000000) {
+      const millions = numAmount / 1000000;
+      return millions >= 10
+        ? `€${millions.toFixed(0)}M`
+        : `€${millions.toFixed(1)}M`;
+    }
+    if (Math.abs(numAmount) >= 1000) {
+      const thousands = numAmount / 1000;
+      return thousands >= 10
+        ? `€${thousands.toFixed(0)}K`
+        : `€${thousands.toFixed(1)}K`;
+    }
+    return numAmount % 1 === 0
+      ? `€${numAmount.toString()}`
+      : `€${numAmount.toFixed(2)}`;
+  };
+
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
+          {payload.map((entry, index) => (
+            <p key={index} className="text-sm" style={{ color: entry.color }}>
+              {entry.name === "Verified Revenue"
+                ? "Verified Revenue"
+                : "Planned Revenue"}
+              : {formatAmountString(entry.value)}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={chartData}>
         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
         <XAxis dataKey="name" stroke="#64748b" />
         <YAxis stroke="#64748b" />
-        <Tooltip
-          contentStyle={{
-            backgroundColor: "#fff",
-            border: "1px solid #e2e8f0",
-            borderRadius: "8px",
-          }}
-          formatter={(value, name) => {
-            if (typeof value === "number") {
-              return [
-                `€${value.toLocaleString()}`,
-                name === "Verified Revenue"
-                  ? "Verified Revenue"
-                  : "Planned Revenue",
-              ];
-            }
-            return [value, name];
-          }}
-        />
+        <Tooltip content={<CustomTooltip />} />
         <Legend />
         <Line
           type="monotone"

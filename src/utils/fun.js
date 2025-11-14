@@ -1,5 +1,5 @@
 export function compareChange(oldValue, newValue) {
-  if (oldValue === 0) return "Cannot compare to zero";
+  if (oldValue === 0) return "0";
 
   const diff = newValue - oldValue;
   const percent = (Math.abs(diff) / oldValue) * 100;

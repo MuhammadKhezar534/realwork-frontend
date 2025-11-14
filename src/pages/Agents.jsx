@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import AgentForm from "@/components/agents/AgentForm";
 import AgentList from "@/components/agents/AgentList";
+import Loader from "@/components/common/Loader";
 
 const API_BASE_URL = "http://localhost:3000";
 
@@ -88,11 +89,14 @@ function Agents() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-center text-muted-foreground">Loading...</p>
+      <>
+        <Loader />
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
+          <div className="max-w-7xl mx-auto">
+            <p className="text-center text-muted-foreground">Loading...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 

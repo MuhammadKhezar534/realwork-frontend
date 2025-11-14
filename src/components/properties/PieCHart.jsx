@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, Sector } from "recharts";
 import { useNavigate } from "react-router-dom";
+import { useStore } from "@/store/useStore";
 
 const COLORS = [
   "#0088FE",
@@ -13,7 +14,6 @@ const COLORS = [
   "#00FF00",
 ];
 
-// Custom active (hover) shape
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
   const {
@@ -68,6 +68,7 @@ const renderActiveShape = (props) => {
 
 export default function PropertyStatusChart({ data }) {
   const navigate = useNavigate();
+  const { setProperties } = useStore();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_, index) => {
@@ -75,7 +76,14 @@ export default function PropertyStatusChart({ data }) {
   };
 
   const handleClick = (entry) => {
-    navigate(`/property?status=${encodeURIComponent(entry.status)}`);
+    if (
+      entry &&
+      Array.isArray(entry.properties) &&
+      entry.properties.length > 0
+    ) {
+      setProperties(entry.properties);
+      navigate("/view-properties");
+    }
   };
 
   return (

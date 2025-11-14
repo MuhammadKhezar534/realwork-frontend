@@ -4,7 +4,11 @@ import { mergeRevenueData } from "@/utils/fun";
 
 const API_BASE_URL = "http://localhost:3000";
 
-export const useGetStats = (selectedEmployee, selectedCity) => {
+export const useGetStats = (
+  selectedEmployee,
+  selectedCity,
+  isFetchUpdatedData = false
+) => {
   const [employees, setEmployees] = useState([]);
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,7 +17,6 @@ export const useGetStats = (selectedEmployee, selectedCity) => {
   const [employeePropertiesData, setEmployeePropertiesData] = useState(null);
   const [error, setError] = useState(null);
 
-  // Fetch employees list
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -30,13 +33,11 @@ export const useGetStats = (selectedEmployee, selectedCity) => {
     fetchEmployees();
   }, []);
 
-  // Fetch properties to extract cities
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/properties`);
         if (response.data && response.data.data) {
-          // Extract unique cities from properties
           const uniqueCities = [
             ...new Set(
               response.data.data
@@ -55,7 +56,6 @@ export const useGetStats = (selectedEmployee, selectedCity) => {
     fetchProperties();
   }, []);
 
-  // Fetch all three APIs when filters change
   useEffect(() => {
     const fetchAllData = async () => {
       setLoading(true);
@@ -72,7 +72,6 @@ export const useGetStats = (selectedEmployee, selectedCity) => {
         const queryString = params.toString();
         const urlSuffix = queryString ? `?${queryString}` : "";
 
-        // Fetch all three APIs in parallel
         const [verifiedRes, plannedRes, employeePropsRes] = await Promise.all([
           axios.get(
             `${API_BASE_URL}/properties/fetch-verified-revenue${urlSuffix}`
@@ -95,7 +94,7 @@ export const useGetStats = (selectedEmployee, selectedCity) => {
     };
 
     fetchAllData();
-  }, [selectedEmployee, selectedCity]);
+  }, [selectedEmployee, selectedCity, isFetchUpdatedData]);
 
   return {
     employees,
