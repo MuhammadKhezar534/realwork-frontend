@@ -28,10 +28,14 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
     if (active && payload && payload.length) {
       const data = payload[0]?.payload;
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-semibold text-gray-800 mb-2">{data?.name}</p>
+        <div className="bg-slate-800 p-3 border border-slate-700 rounded-lg shadow-xl">
+          <p className="font-semibold text-white mb-2">{data?.name}</p>
           {payload.map((entry, index) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
+            <p
+              key={index}
+              className="text-sm text-white"
+              style={{ color: entry.color }}
+            >
               {entry.name}:{" "}
               {entry.dataKey === "propertyCount" ? (
                 entry.value
@@ -55,7 +59,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[400px] text-gray-500">
+      <div className="flex items-center justify-center h-[400px] text-slate-400">
         <p>No data available</p>
       </div>
     );
@@ -77,11 +81,11 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
           barCategoryGap="20%"
           barGap={10}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#475569" opacity={0.3} />
           <XAxis
             dataKey="name"
-            stroke="#64748b"
-            tick={{ fill: "#64748b", fontSize: 12 }}
+            stroke="#94a3b8"
+            tick={{ fill: "#94a3b8", fontSize: 12 }}
             angle={-45}
             textAnchor="end"
             height={100}
@@ -91,7 +95,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
             yAxisId="propertyCount"
             orientation="left"
             stroke="#6366f1"
-            tick={{ fill: "#6366f1" }}
+            tick={{ fill: "#818cf8", fontSize: 12 }}
             allowDecimals={false}
             domain={[0, Math.ceil(maxPropertyCount * 1.1)]}
             label={{
@@ -100,7 +104,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
               position: "insideLeft",
               style: {
                 textAnchor: "middle",
-                fill: "#6366f1",
+                fill: "#818cf8",
                 fontSize: "12px",
               },
             }}
@@ -109,7 +113,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
             yAxisId="revenue"
             orientation="right"
             stroke="#10b981"
-            tick={{ fill: "#10b981" }}
+            tick={{ fill: "#34d399", fontSize: 12 }}
             domain={[0, Math.ceil(maxRevenue * 1.1)]}
             tickFormatter={(value) => {
               if (value >= 1000000) {
@@ -125,14 +129,14 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
               position: "insideRight",
               style: {
                 textAnchor: "middle",
-                fill: "#10b981",
+                fill: "#34d399",
                 fontSize: "12px",
               },
             }}
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend
-            wrapperStyle={{ paddingTop: "20px" }}
+            wrapperStyle={{ paddingTop: "20px", color: "#e2e8f0" }}
             iconType="rect"
             formatter={(value) => {
               if (value === "propertyCount") return "Property Count";

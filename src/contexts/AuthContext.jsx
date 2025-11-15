@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-
-const API_BASE_URL = "http://localhost:3000";
+import API_BASE_URL from "@/config/api";
 
 const AuthContext = createContext(null);
 

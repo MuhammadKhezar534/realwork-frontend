@@ -121,9 +121,13 @@ const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
+        <div className="bg-slate-800 p-3 border border-slate-700 rounded-lg shadow-xl">
           {payload.map((entry, index) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
+            <p
+              key={index}
+              className="text-sm text-white"
+              style={{ color: entry.color }}
+            >
               {entry.name === "Verified Revenue"
                 ? "Verified Revenue"
                 : "Planned Revenue"}
@@ -139,11 +143,15 @@ const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={chartData}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-        <XAxis dataKey="name" stroke="#64748b" />
-        <YAxis stroke="#64748b" />
+        <CartesianGrid strokeDasharray="3 3" stroke="#475569" opacity={0.3} />
+        <XAxis
+          dataKey="name"
+          stroke="#94a3b8"
+          tick={{ fill: "#94a3b8", fontSize: 12 }}
+        />
+        <YAxis stroke="#94a3b8" tick={{ fill: "#94a3b8", fontSize: 12 }} />
         <Tooltip content={<CustomTooltip />} />
-        <Legend />
+        <Legend wrapperStyle={{ color: "#e2e8f0" }} />
         <Line
           type="monotone"
           dataKey="verified"

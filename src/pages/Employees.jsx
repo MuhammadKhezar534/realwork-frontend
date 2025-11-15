@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import EmployeeForm from "@/components/employees/EmployeeForm";
 import EmployeeList from "@/components/employees/EmployeeList";
 import Loader from "@/components/common/Loader";
-
-const API_BASE_URL = "http://localhost:3000";
+import API_BASE_URL from "@/config/api";
 
 function Employees() {
   const navigate = useNavigate();

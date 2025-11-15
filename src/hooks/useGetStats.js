@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { mergeRevenueData } from "@/utils/fun";
-
-const API_BASE_URL = "http://localhost:3000";
+import API_BASE_URL from "@/config/api";
 
 export const useGetStats = (
   selectedEmployee,

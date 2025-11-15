@@ -57,3 +57,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Select Styling */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/* Dropdown option styling - light background with dark text for better visibility */
+select option {
+  background-color: #ffffff;
+  color: #1e293b;
+  padding: 8px 12px;
+}
+
+/* For dark theme selects */
+select.bg-slate-700 option,
+select[class*="bg-slate"] option {
+  background-color: #f8fafc;
+  color: #1e293b;
+}

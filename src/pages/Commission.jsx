@@ -16,8 +16,7 @@ import {
   formatAddress,
   prepareCommissionPayload,
 } from "@/utils/commissionHelpers";
-
-const API_BASE_URL = "http://localhost:3000";
+import API_BASE_URL from "@/config/api";
 
 function Commission() {
   const navigate = useNavigate();
@@ -63,7 +62,7 @@ function Commission() {
     } finally {
       setTimeout(() => {
         setLoading(false);
-      }, 500);
+      }, 100);
     }
   }, [currentPage]);
 
@@ -93,11 +92,10 @@ function Commission() {
       delete newState[propertyId];
       return newState;
     });
-    fetchProperties();
+    // fetchProperties();
   };
 
   const handleSave = async (propertyId) => {
-    // Store scroll position before save
     const scrollPosition = window.scrollY;
 
     setSavingPropertyId(propertyId);
@@ -119,7 +117,6 @@ function Commission() {
       showNotification("success", "Property updated successfully!");
       await fetchProperties();
 
-      // Restore scroll position after a brief delay to allow DOM update
       setTimeout(() => {
         window.scrollTo(0, scrollPosition);
       }, 100);
@@ -153,14 +150,6 @@ function Commission() {
       },
     }));
   };
-
-  if (loading) {
-    return (
-      <>
-        <Loader />
-      </>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
@@ -427,7 +416,7 @@ function Commission() {
           </Card>
         )}
       </div>
-      {savingPropertyId && <Loader />}
+      {(savingPropertyId || loading) && <Loader />}
     </div>
   );
 }

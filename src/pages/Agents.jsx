@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import AgentForm from "@/components/agents/AgentForm";
 import AgentList from "@/components/agents/AgentList";
 import Loader from "@/components/common/Loader";
-
-const API_BASE_URL = "http://localhost:3000";
+import API_BASE_URL from "@/config/api";
 
 function Agents() {
   const navigate = useNavigate();
