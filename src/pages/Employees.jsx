@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import EmployeeForm from "@/components/employees/EmployeeForm";
 import EmployeeList from "@/components/employees/EmployeeList";
+import ViewToggle from "@/components/common/ViewToggle";
+import Sidebar from "@/components/dashboard/Sidebar";
 import Loader from "@/components/common/Loader";
 import API_BASE_URL from "@/config/api";
 
 function Employees() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({ name: "" });
+  const [view, setView] = useState("list");
 
   useEffect(() => {
     fetchEmployees();
@@ -88,9 +93,12 @@ function Employees() {
     return (
       <>
         <Loader />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
-          <div className="max-w-7xl mx-auto">
-            <p className="text-center text-muted-foreground">Loading...</p>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex">
+          <Sidebar />
+          <div className="flex-1 ml-64 p-8">
+            <div className="max-w-7xl mx-auto">
+              <p className="text-center text-muted-foreground">Loading...</p>
+            </div>
           </div>
         </div>
       </>
@@ -98,55 +106,64 @@ function Employees() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Employee Management
-          </h1>
-          <div className="flex gap-2">
-            {employees.length > 0 && !showForm && (
-              <Button onClick={() => setShowForm(true)}>Add Employee</Button>
-            )}
-            <Button variant="outline" onClick={() => navigate("/")}>
-              Home
-            </Button>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex">
+      <Sidebar />
+      <div className="flex-1 ml-64 p-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="flex items-center justify-between">
+            <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+              {t("employee.management")}
+            </h1>
+            <div className="flex items-center gap-3">
+              {employees.length > 0 && !showForm && (
+                <>
+                  <ViewToggle view={view} onViewChange={setView} />
+                  <Button onClick={() => setShowForm(true)}>
+                    {t("buttons.addEmployee")}
+                  </Button>
+                </>
+              )}
+              <Button variant="outline" onClick={() => navigate("/")}>
+                {t("pages.home")}
+              </Button>
+            </div>
           </div>
+
+          {showForm && (
+            <Card className="bg-white shadow-lg border-2 border-transparent hover:border-primary-light">
+              <CardContent className="p-6">
+                <EmployeeForm
+                  formData={formData}
+                  onSubmit={handleAddEmployee}
+                  onCancel={() => {
+                    setShowForm(false);
+                    setFormData({ name: "" });
+                  }}
+                  onChange={setFormData}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          <EmployeeList
+            employees={employees}
+            onEdit={handleEdit}
+            onSave={handleSave}
+            onDelete={handleDelete}
+            editingId={editingId}
+            formData={formData}
+            onFormChange={setFormData}
+            view={view}
+          />
+
+          {employees.length === 0 && !showForm && (
+            <Card className="bg-white">
+              <CardContent className="p-8 text-center">
+                <p className="text-muted-foreground">No employees found</p>
+              </CardContent>
+            </Card>
+          )}
         </div>
-
-        {showForm && (
-          <Card className="bg-white shadow-lg border-2 border-transparent hover:border-blue-200">
-            <CardContent className="p-6">
-              <EmployeeForm
-                formData={formData}
-                onSubmit={handleAddEmployee}
-                onCancel={() => {
-                  setShowForm(false);
-                  setFormData({ name: "" });
-                }}
-                onChange={setFormData}
-              />
-            </CardContent>
-          </Card>
-        )}
-
-        <EmployeeList
-          employees={employees}
-          onEdit={handleEdit}
-          onSave={handleSave}
-          onDelete={handleDelete}
-          editingId={editingId}
-          formData={formData}
-          onFormChange={setFormData}
-        />
-
-        {employees.length === 0 && !showForm && (
-          <Card className="bg-white">
-            <CardContent className="p-8 text-center">
-              <p className="text-muted-foreground">No employees found</p>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );

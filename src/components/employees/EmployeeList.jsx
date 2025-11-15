@@ -19,6 +19,7 @@ const EmployeeList = ({
   editingId,
   formData,
   onFormChange,
+  view = "list",
 }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
@@ -40,62 +41,117 @@ const EmployeeList = ({
     return null;
   }
 
+  const renderEmployeeCard = (employee) => {
+    const employeeId = employee._id || employee.id;
+    const isEditing = editingId === employeeId;
+
+    return (
+      <Card
+        key={employeeId}
+        className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-transparent hover:border-blue-200"
+      >
+        {isEditing ? (
+          <CardContent className="pt-6">
+            <EmployeeForm
+              formData={formData}
+              onSubmit={() => onSave(employeeId)}
+              onCancel={() => {
+                onEdit(null);
+                onFormChange({ name: "" });
+              }}
+              onChange={onFormChange}
+              isEditing={true}
+            />
+          </CardContent>
+        ) : (
+          <>
+            <CardHeader className="bg-gradient-to-r from-primary to-primary-dark text-black rounded-t-lg">
+              <CardTitle className="text-lg font-semibold">
+                {employee.name}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="flex gap-2 pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => onEdit(employee)}
+                  className="flex-1"
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => handleDeleteClick(employeeId)}
+                  className="flex-1"
+                >
+                  Delete
+                </Button>
+              </div>
+            </CardContent>
+          </>
+        )}
+      </Card>
+    );
+  };
+
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {employees.map((employee) => {
-          const employeeId = employee._id || employee.id;
-          const isEditing = editingId === employeeId;
+      {view === "grid" ? (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {employees.map(renderEmployeeCard)}
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {employees.map((employee) => {
+            const employeeId = employee._id || employee.id;
+            const isEditing = editingId === employeeId;
 
-          return (
-            <Card
-              key={employeeId}
-              className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-transparent hover:border-blue-200"
-            >
-              {isEditing ? (
-                <CardContent className="pt-6">
-                  <EmployeeForm
-                    formData={formData}
-                    onSubmit={() => onSave(employeeId)}
-                    onCancel={() => {
-                      onEdit(null);
-                      onFormChange({ name: "" });
-                    }}
-                    onChange={onFormChange}
-                    isEditing={true}
-                  />
-                </CardContent>
-              ) : (
-                <>
-                  <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-t-lg">
-                    <CardTitle className="text-lg font-semibold">
-                      {employee.name}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <div className="flex gap-2 pt-4">
+            return (
+              <Card
+                key={employeeId}
+                className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-transparent hover:border-blue-200"
+              >
+                {isEditing ? (
+                  <CardContent className="pt-6">
+                    <EmployeeForm
+                      formData={formData}
+                      onSubmit={() => onSave(employeeId)}
+                      onCancel={() => {
+                        onEdit(null);
+                        onFormChange({ name: "" });
+                      }}
+                      onChange={onFormChange}
+                      isEditing={true}
+                    />
+                  </CardContent>
+                ) : (
+                  <div className="flex items-center justify-between p-6">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-semibold text-gray-900">
+                        {employee.name}
+                      </h3>
+                    </div>
+                    <div className="flex gap-2">
                       <Button
                         variant="outline"
                         onClick={() => onEdit(employee)}
-                        className="flex-1"
                       >
                         Edit
                       </Button>
                       <Button
                         variant="destructive"
                         onClick={() => handleDeleteClick(employeeId)}
-                        className="flex-1"
                       >
                         Delete
                       </Button>
                     </div>
-                  </CardContent>
-                </>
-              )}
-            </Card>
-          );
-        })}
-      </div>
+                  </div>
+                )}
+              </Card>
+            );
+          })}
+        </div>
+      )}
 
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>

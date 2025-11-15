@@ -50,7 +50,7 @@ const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
         cx={cx}
         cy={cy}
         r={5}
-        fill="#6366f1"
+        fill="#bed730"
         stroke="#fff"
         strokeWidth={2}
         style={{ cursor: "pointer" }}
@@ -121,12 +121,15 @@ const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-800 p-3 border border-slate-700 rounded-lg shadow-xl">
+        <div className="bg-white p-3 border-2 border-primary/30 rounded-lg shadow-xl">
           {payload.map((entry, index) => (
             <p
               key={index}
-              className="text-sm text-white"
-              style={{ color: entry.color }}
+              className="text-sm font-medium"
+              style={{
+                color:
+                  entry.name === "Verified Revenue" ? "#bed730" : "#10b981",
+              }}
             >
               {entry.name === "Verified Revenue"
                 ? "Verified Revenue"
@@ -151,11 +154,11 @@ const RevenueComparisonChart = ({ verifiedArray, plannedArray }) => {
         />
         <YAxis stroke="#94a3b8" tick={{ fill: "#94a3b8", fontSize: 12 }} />
         <Tooltip content={<CustomTooltip />} />
-        <Legend wrapperStyle={{ color: "#e2e8f0" }} />
+        <Legend wrapperStyle={{ color: "#374151" }} />
         <Line
           type="monotone"
           dataKey="verified"
-          stroke="#6366f1"
+          stroke="#bed730"
           strokeWidth={3}
           name="Verified Revenue"
           dot={<VerifiedDot />}

@@ -67,7 +67,7 @@ const AgentList = ({
                 </CardContent>
               ) : (
                 <>
-                  <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-t-lg">
+                  <CardHeader className="bg-gradient-to-r from-primary to-primary-dark text-black rounded-t-lg">
                     <CardTitle className="text-lg font-semibold">
                       {agent.name || agent.agentId}
                     </CardTitle>

@@ -1,15 +1,22 @@
 export function compareChange(oldValue, newValue) {
-  if (oldValue === 0) return "0";
+  if (oldValue === 0 && newValue === 0) {
+    return { percent: "0.00", direction: "neutral" };
+  }
+
+  if (oldValue === 0) {
+    const direction = newValue >= 0 ? "up" : "down";
+    return { percent: Math.abs(newValue).toFixed(1), direction };
+  }
 
   const diff = newValue - oldValue;
-  const percent = (Math.abs(diff) / oldValue) * 100;
+  const percent = ((diff / oldValue) * 100).toFixed(2);
 
   if (diff > 0) {
-    return `${percent.toFixed(2)}% Growth`;
+    return { percent, direction: "up" };
   } else if (diff < 0) {
-    return `${percent.toFixed(2)}% Decline`;
+    return { percent: Math.abs(percent).toString(), direction: "down" };
   } else {
-    return "No change";
+    return { percent: "0.00", direction: "neutral" };
   }
 }
 

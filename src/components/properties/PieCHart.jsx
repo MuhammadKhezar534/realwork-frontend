@@ -5,7 +5,6 @@ import { useStore } from "@/store/useStore";
 import "@/styles/chart.css";
 
 const CustomTooltip = ({ active, payload, total }) => {
-  console.log({ active, payload, total });
   if (active && payload && payload.length) {
     const data = payload[0];
     const percentage = total > 0 ? ((data.value / total) * 100).toFixed(1) : 0;
@@ -101,7 +100,6 @@ export default function PropertyStatusChart({ data }) {
   const { setProperties } = useStore();
   const [activeIndex, setActiveIndex] = useState(0);
   const total = data?.reduce((sum, item) => sum + (item.count || 0), 0);
-  console.log({ total, data });
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index);

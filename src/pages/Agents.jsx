@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import AgentForm from "@/components/agents/AgentForm";
 import AgentList from "@/components/agents/AgentList";
 import Loader from "@/components/common/Loader";
+import Sidebar from "@/components/dashboard/Sidebar";
 import API_BASE_URL from "@/config/api";
 
 function Agents() {
@@ -90,9 +91,12 @@ function Agents() {
     return (
       <>
         <Loader />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
-          <div className="max-w-7xl mx-auto">
-            <p className="text-center text-muted-foreground">Loading...</p>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex">
+          <Sidebar />
+          <div className="flex-1 ml-64 p-8">
+            <div className="max-w-7xl mx-auto">
+              <p className="text-center text-muted-foreground">Loading...</p>
+            </div>
           </div>
         </div>
       </>
@@ -100,55 +104,58 @@ function Agents() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Agent Management
-          </h1>
-          <div className="flex gap-2">
-            {/* {agents.length > 0 && !showForm && (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex">
+      <Sidebar />
+      <div className="flex-1 ml-64 p-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="flex items-center justify-between">
+            <h1 className="text-4xl font-bold text-foreground bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+              Agent Management
+            </h1>
+            <div className="flex gap-2">
+              {/* {agents.length > 0 && !showForm && (
               <Button onClick={() => setShowForm(true)}>Add Agent</Button>
             )} */}
-            <Button variant="outline" onClick={() => navigate("/")}>
-              Home
-            </Button>
+              <Button variant="outline" onClick={() => navigate("/")}>
+                Home
+              </Button>
+            </div>
           </div>
+
+          {showForm && (
+            <Card className="bg-white shadow-lg border-2 border-transparent hover:border-primary-light">
+              <CardContent className="p-6">
+                <AgentForm
+                  formData={formData}
+                  onSubmit={handleAddAgent}
+                  onCancel={() => {
+                    setShowForm(false);
+                    setFormData({ agentId: "", name: "" });
+                  }}
+                  onChange={setFormData}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          <AgentList
+            agents={agents}
+            onEdit={handleEdit}
+            onSave={handleSave}
+            onDelete={handleDelete}
+            editingId={editingId}
+            formData={formData}
+            onFormChange={setFormData}
+          />
+
+          {agents.length === 0 && !showForm && (
+            <Card className="bg-white">
+              <CardContent className="p-8 text-center">
+                <p className="text-muted-foreground">No agents found</p>
+              </CardContent>
+            </Card>
+          )}
         </div>
-
-        {showForm && (
-          <Card className="bg-white shadow-lg border-2 border-transparent hover:border-blue-200">
-            <CardContent className="p-6">
-              <AgentForm
-                formData={formData}
-                onSubmit={handleAddAgent}
-                onCancel={() => {
-                  setShowForm(false);
-                  setFormData({ agentId: "", name: "" });
-                }}
-                onChange={setFormData}
-              />
-            </CardContent>
-          </Card>
-        )}
-
-        <AgentList
-          agents={agents}
-          onEdit={handleEdit}
-          onSave={handleSave}
-          onDelete={handleDelete}
-          editingId={editingId}
-          formData={formData}
-          onFormChange={setFormData}
-        />
-
-        {agents.length === 0 && !showForm && (
-          <Card className="bg-white">
-            <CardContent className="p-8 text-center">
-              <p className="text-muted-foreground">No agents found</p>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );

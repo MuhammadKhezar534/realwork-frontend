@@ -1,55 +1,30 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import RefreshButton from "./RefreshButton";
 
 const DashboardHeader = ({ onFetchLatestData, fetchingProperties }) => {
-  const navigate = useNavigate();
-  const { logout, user } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
-  };
+  const { user } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <div className="flex justify-between items-center mb-8">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">
-          Dashboard
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent mb-2 tracking-tight">
+          {t("dashboard.title")}
         </h1>
         {user && (
-          <p className="text-sm text-slate-400 font-medium">
-            Welcome back, <span className="text-blue-400">{user.username}</span>
+          <p className="text-sm text-gray-600 font-medium">
+            {t("dashboard.welcomeBack")},{" "}
+            <span className="text-primary font-semibold">{user.username}</span>
           </p>
         )}
       </div>
-      <div className="flex gap-3">
-        <Button
-          onClick={onFetchLatestData}
-          disabled={fetchingProperties}
-          className="bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-        >
-          {fetchingProperties ? "Fetching..." : "Get Latest Data"}
-        </Button>
-        <Button
-          onClick={() => navigate("/employees")}
-          className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-medium"
-        >
-          Employees
-        </Button>
-        <Button
-          onClick={() => navigate("/commission")}
-          className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-medium"
-        >
-          Commission
-        </Button>
-        <Button
-          onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 font-medium"
-        >
-          Logout
-        </Button>
+      <div className="flex items-center gap-3">
+        <RefreshButton
+          onFetchLatestData={onFetchLatestData}
+          fetchingProperties={fetchingProperties}
+        />
       </div>
     </div>
   );

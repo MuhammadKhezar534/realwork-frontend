@@ -4,25 +4,46 @@
 
 @layer base {
   :root {
+    /* Theme Colors */
+    --theme-primary: #bed730;
+    --theme-primary-hover: #a8c128;
+    --theme-primary-light: #d4e668;
+    --theme-primary-dark: #9cb520;
+    
+    --theme-bg-dark: #0a0f0a;
+    --theme-bg-dark-secondary: #141914;
+    --theme-bg-surface: #1a1f1a;
+    --theme-bg-surface-light: #242924;
+    
+    --theme-bg-light: #ffffff;
+    --theme-bg-light-secondary: #f8faf5;
+    --theme-bg-light-tertiary: #f0f4ea;
+    
+    --theme-text-primary: #000000;
+    --theme-text-secondary: #ffffff;
+    --theme-border-dark: #2a2f2a;
+    --theme-border-light: #e5e7eb;
+    
+    /* ShadCN UI Variables */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 0%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 0%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 72 79% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 120 10% 95%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 72 79% 50%;
+    --accent-foreground: 0 0% 0%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 72 79% 50%;
     --radius: 0.5rem;
   }
 

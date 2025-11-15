@@ -1,0 +1,129 @@
+{
+  "dashboard": {
+    "title": "Heykens Dashboard",
+    "welcomeBack": "Welkom terug"
+  },
+  "metrics": {
+    "totalVerifiedRevenue": "Totale Geverifieerde Inkomsten",
+    "plannedRevenue": "Geplande Inkomsten",
+    "pipelineTotalValue": "Totale Pipelinewaarde",
+    "revenueGrowth": "Inkomstengroei",
+    "vsPreviousPeriod": "vs vorige maandenperiode"
+  },
+  "filters": {
+    "employee": "Medewerker",
+    "city": "Stad",
+    "allEmployees": "Alle Medewerkers",
+    "allCities": "Alle Steden"
+  },
+  "charts": {
+    "verifiedVsPlanned": "Geverifieerde vs Geplande Inkomsten",
+    "propertyStatusDistribution": "Verdeling Eigenschapstatus",
+    "realtorPerformance": "Makelaarsprestatiestatistiek",
+    "propertyCount": "Aantal Eigendommen",
+    "totalRevenue": "Totale Inkomsten"
+  },
+  "pages": {
+    "home": "Home",
+    "employees": "Medewerkers",
+    "commission": "Commissie",
+    "propertyManagement": "Vastgoedbeheer",
+    "agents": "Agenten",
+    "properties": "Eigendommen",
+    "employeeStats": "Medewerkersstatistieken"
+  },
+  "buttons": {
+    "refresh": "Vernieuwen",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "edit": "Bewerken",
+    "delete": "Verwijderen",
+    "add": "Toevoegen",
+    "back": "Terug",
+    "logout": "Uitloggen",
+    "signIn": "Inloggen",
+    "addEmployee": "Medewerker Toevoegen",
+    "addAgent": "Agent Toevoegen"
+  },
+  "employee": {
+    "management": "Medewerkerbeheer",
+    "name": "Naam",
+    "noEmployees": "Geen medewerkers gevonden",
+    "addSuccess": "Medewerker succesvol toegevoegd",
+    "updateSuccess": "Medewerker succesvol bijgewerkt",
+    "deleteSuccess": "Medewerker succesvol verwijderd",
+    "deleteConfirm": "Weet u zeker dat u deze medewerker wilt verwijderen?",
+    "deleteWarning": "Deze actie kan niet ongedaan worden gemaakt"
+  },
+  "commission": {
+    "management": "Vastgoedbeheer",
+    "property": "Eigendom",
+    "propertyId": "Eigendom ID",
+    "address": "Adres",
+    "assignedEmployee": "Medewerker",
+    "notAssigned": "Niet toegewezen",
+    "commission": "Commissie",
+    "usePercentage": "Gebruik Percentage",
+    "percentage": "Percentage",
+    "fixedAmount": "Vast Bedrag",
+    "enterPercentage": "Voer percentage in",
+    "enterFixedAmount": "Voer vast bedrag in",
+    "selectEmployee": "Selecteer een medewerker",
+    "noProperties": "Geen eigendommen gevonden",
+    "updateSuccess": "Eigendom succesvol bijgewerkt",
+    "saving": "Opslaan",
+    "status": "Status",
+    "transferDate": "Transportdatum",
+    "noDate": "Geen datum"
+  },
+  "agent": {
+    "management": "Agentbeheer",
+    "agentId": "Agent ID",
+    "name": "Naam",
+    "noAgents": "Geen agenten gevonden"
+  },
+  "properties": {
+    "list": "Eigendommen Lijst",
+    "total": "Totaal Eigendommen",
+    "addressNotAvailable": "Adres niet beschikbaar",
+    "noProperties": "Geen eigendommen gevonden"
+  },
+  "login": {
+    "title": "Welkom Terug",
+    "subtitle": "Log in om toegang te krijgen tot uw dashboard",
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "enterUsername": "Voer uw gebruikersnaam in",
+    "enterPassword": "Voer uw wachtwoord in",
+    "signIn": "Inloggen",
+    "signingIn": "Inloggen",
+    "error": "Inloggen mislukt. Probeer het opnieuw",
+    "errorRequired": "Voer zowel gebruikersnaam als wachtwoord in"
+  },
+  "view": {
+    "list": "Lijst",
+    "grid": "Raster"
+  },
+  "common": {
+    "loading": "Laden",
+    "fetching": "Ophalen",
+    "noData": "Geen gegevens beschikbaar",
+    "error": "Er is een fout opgetreden",
+    "success": "Succes"
+  },
+  "pagination": {
+    "showing": "Toont",
+    "to": "tot",
+    "of": "van",
+    "properties": "eigendommen",
+    "previous": "Vorige",
+    "next": "Volgende"
+  },
+  "recentSold": {
+    "title": "Recent Verkochte Eigendommen",
+    "address": "Adres",
+    "commission": "Commissie",
+    "employee": "Medewerker",
+    "noProperties": "Geen recent verkochte eigendommen gevonden"
+  }
+}

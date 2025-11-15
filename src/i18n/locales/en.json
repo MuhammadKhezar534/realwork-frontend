@@ -1,0 +1,129 @@
+{
+  "dashboard": {
+    "title": "Heykens Dashboard",
+    "welcomeBack": "Welcome back"
+  },
+  "metrics": {
+    "totalVerifiedRevenue": "Total Verified Revenue",
+    "plannedRevenue": "Planned Revenue",
+    "pipelineTotalValue": "Pipeline Total Value",
+    "revenueGrowth": "Revenue Growth",
+    "vsPreviousPeriod": "vs previous months period"
+  },
+  "filters": {
+    "employee": "Employee",
+    "city": "City",
+    "allEmployees": "All Employees",
+    "allCities": "All Cities"
+  },
+  "charts": {
+    "verifiedVsPlanned": "Verified vs Planned Revenue",
+    "propertyStatusDistribution": "Property Status Distribution",
+    "realtorPerformance": "Realtor Performance Metric",
+    "propertyCount": "Property Count",
+    "totalRevenue": "Total Revenue"
+  },
+  "pages": {
+    "home": "Home",
+    "employees": "Employees",
+    "commission": "Commission",
+    "propertyManagement": "Property Management",
+    "agents": "Agents",
+    "properties": "Properties",
+    "employeeStats": "Employee Statistics"
+  },
+  "buttons": {
+    "refresh": "Refresh",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "back": "Back",
+    "logout": "Logout",
+    "signIn": "Sign In",
+    "addEmployee": "Add Employee",
+    "addAgent": "Add Agent"
+  },
+  "employee": {
+    "management": "Employee Management",
+    "name": "Name",
+    "noEmployees": "No employees found",
+    "addSuccess": "Employee added successfully",
+    "updateSuccess": "Employee updated successfully",
+    "deleteSuccess": "Employee deleted successfully",
+    "deleteConfirm": "Are you sure you want to delete this employee?",
+    "deleteWarning": "This action cannot be undone"
+  },
+  "commission": {
+    "management": "Property Management",
+    "property": "Property",
+    "propertyId": "Property ID",
+    "address": "Address",
+    "assignedEmployee": "Employee",
+    "notAssigned": "Not assigned",
+    "commission": "Commission",
+    "usePercentage": "Use Percentage",
+    "percentage": "Percentage",
+    "fixedAmount": "Fixed Amount",
+    "enterPercentage": "Enter percentage",
+    "enterFixedAmount": "Enter fixed amount",
+    "selectEmployee": "Select an employee",
+    "noProperties": "No properties found",
+    "updateSuccess": "Property updated successfully",
+    "saving": "Saving",
+    "status": "Status",
+    "transferDate": "Transfer Date",
+    "noDate": "No date"
+  },
+  "agent": {
+    "management": "Agent Management",
+    "agentId": "Agent ID",
+    "name": "Name",
+    "noAgents": "No agents found"
+  },
+  "properties": {
+    "list": "Properties List",
+    "total": "Total Properties",
+    "addressNotAvailable": "Address not available",
+    "noProperties": "No properties found"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to access your dashboard",
+    "username": "Username",
+    "password": "Password",
+    "enterUsername": "Enter your username",
+    "enterPassword": "Enter your password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in",
+    "error": "Login failed. Please try again",
+    "errorRequired": "Please enter both username and password"
+  },
+  "view": {
+    "list": "List",
+    "grid": "Grid"
+  },
+  "common": {
+    "loading": "Loading",
+    "fetching": "Fetching",
+    "noData": "No data available",
+    "error": "An error occurred",
+    "success": "Success"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "properties": "properties",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "recentSold": {
+    "title": "Recent Sold Properties",
+    "address": "Address",
+    "commission": "Commission",
+    "employee": "Employee",
+    "noProperties": "No recently sold properties found"
+  }
+}

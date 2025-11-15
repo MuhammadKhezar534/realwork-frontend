@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Amount from "@/components/common/Amount";
+import "@/styles/chart.css";
 
 const RealtorPerformanceMetric = ({ data = [] }) => {
   const navigate = useNavigate();
@@ -23,18 +24,20 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
     totalRevenue: item.totalRevenue || 0,
   }));
 
-  // Custom tooltip
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0]?.payload;
       return (
-        <div className="bg-slate-800 p-3 border border-slate-700 rounded-lg shadow-xl">
-          <p className="font-semibold text-white mb-2">{data?.name}</p>
+        <div className="bg-white p-3 border-2 border-primary/30 rounded-lg shadow-xl">
+          <p className="font-semibold text-gray-900 mb-2">{data?.name}</p>
           {payload.map((entry, index) => (
             <p
               key={index}
-              className="text-sm text-white"
-              style={{ color: entry.color }}
+              className="text-sm font-medium"
+              style={{
+                color:
+                  entry.dataKey === "propertyCount" ? "#bed730" : "#10b981",
+              }}
             >
               {entry.name}:{" "}
               {entry.dataKey === "propertyCount" ? (
@@ -50,7 +53,6 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
     return null;
   };
 
-  // Handle bar click
   const handleBarClick = (data) => {
     if (data && data.employeeId) {
       navigate(`/employee-stats/${data.employeeId}`);
@@ -65,7 +67,6 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
     );
   }
 
-  // Calculate max values for proper scaling
   const maxPropertyCount = Math.max(
     ...chartData.map((d) => d.propertyCount),
     1
@@ -94,8 +95,8 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
           <YAxis
             yAxisId="propertyCount"
             orientation="left"
-            stroke="#6366f1"
-            tick={{ fill: "#818cf8", fontSize: 12 }}
+            stroke="#bed730"
+            tick={{ fill: "#bed730", fontSize: 14 }}
             allowDecimals={false}
             domain={[0, Math.ceil(maxPropertyCount * 1.1)]}
             label={{
@@ -104,7 +105,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
               position: "insideLeft",
               style: {
                 textAnchor: "middle",
-                fill: "#818cf8",
+                fill: "#bed730",
                 fontSize: "12px",
               },
             }}
@@ -136,7 +137,11 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend
-            wrapperStyle={{ paddingTop: "20px", color: "#e2e8f0" }}
+            wrapperStyle={{
+              paddingTop: "20px",
+              color: "#374151",
+              height: "0px",
+            }}
             iconType="rect"
             formatter={(value) => {
               if (value === "propertyCount") return "Property Count";
@@ -147,7 +152,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
           <Bar
             dataKey="propertyCount"
             name="Property Count"
-            fill="#6366f1"
+            fill="#bed730"
             radius={[4, 4, 0, 0]}
             yAxisId="propertyCount"
             onClick={(data, index) => {
@@ -156,6 +161,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
               }
             }}
             style={{ cursor: "pointer" }}
+            className="bar-chart"
           />
           <Bar
             dataKey="totalRevenue"
@@ -169,6 +175,7 @@ const RealtorPerformanceMetric = ({ data = [] }) => {
               }
             }}
             style={{ cursor: "pointer" }}
+            className="bar-chart"
           />
         </BarChart>
       </ResponsiveContainer>

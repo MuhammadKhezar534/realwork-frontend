@@ -1,15 +1,60 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import MetricCard from "./MetricCard";
 import { compareChange } from "@/utils/fun";
+import { useStore } from "@/store/useStore";
 
-const MetricsGrid = ({ verifiedRevenueData, plannedRevenueData }) => {
+const MetricsGrid = ({
+  verifiedRevenueData,
+  plannedRevenueData,
+  mergeData,
+}) => {
+  const navigate = useNavigate();
+  const { setProperties } = useStore();
+  const { t } = useTranslation();
+
+  const handleVerifiedRevenueClick = () => {
+    const properties = verifiedRevenueData?.data?.currentMonth?.data;
+    if (Array.isArray(properties) && properties.length > 0) {
+      setProperties(properties);
+      navigate("/view-properties");
+    }
+  };
+
+  const handlePlannedRevenueClick = () => {
+    const plannedRevenueArray = mergeData?.plannedRevenueData || [];
+    const allProperties = [];
+
+    plannedRevenueArray.forEach((revenue) => {
+      if (revenue?.data && Array.isArray(revenue.data)) {
+        allProperties.push(...revenue.data);
+      }
+    });
+
+    if (allProperties.length > 0) {
+      setProperties(allProperties);
+      navigate("/view-properties");
+    }
+  };
+
+  const handlePipelineClick = () => {
+    const properties = plannedRevenueData?.allFilteredProperties;
+    if (Array.isArray(properties) && properties.length > 0) {
+      setProperties(properties);
+      navigate("/view-properties");
+    }
+  };
+
   const metrics = [
     {
-      title: "Total Verified Revenue",
+      title: t("metrics.totalVerifiedRevenue"),
       value: verifiedRevenueData?.data?.currentMonth?.revenue || 0,
-      gradient: "from-blue-600 via-blue-700 to-indigo-700",
-      borderColor: "border-blue-500/20",
-      hoverShadow: "hover:shadow-blue-500/20",
+      gradient: "from-primary via-primary-dark to-[#7a9318]",
+      borderColor: "border-primary/30",
+      hoverShadow: "hover:shadow-primary/20",
+      onClick: handleVerifiedRevenueClick,
+      clickable: true,
       icon: (
         <svg
           className="w-8 h-8"
@@ -27,11 +72,13 @@ const MetricsGrid = ({ verifiedRevenueData, plannedRevenueData }) => {
       ),
     },
     {
-      title: "Planned Revenue",
+      title: t("metrics.plannedRevenue"),
       value: plannedRevenueData?.data?.totalPlannedRevenue || 0,
       gradient: "from-emerald-600 via-emerald-700 to-teal-700",
-      borderColor: "border-emerald-500/20",
+      borderColor: "border-emerald-300",
       hoverShadow: "hover:shadow-emerald-500/20",
+      onClick: handlePlannedRevenueClick,
+      clickable: true,
       icon: (
         <svg
           className="w-8 h-8"
@@ -49,11 +96,13 @@ const MetricsGrid = ({ verifiedRevenueData, plannedRevenueData }) => {
       ),
     },
     {
-      title: "Pipeline Total Value",
+      title: t("metrics.pipelineTotalValue"),
       value: plannedRevenueData?.pipelineTotalValue || 0,
-      gradient: "from-amber-600 via-amber-700 to-orange-700",
-      borderColor: "border-amber-500/20",
-      hoverShadow: "hover:shadow-amber-500/20",
+      gradient: "from-[#d4e668] via-primary to-primary-hover",
+      borderColor: "border-primary-light",
+      hoverShadow: "hover:shadow-primary-light/20",
+      onClick: handlePipelineClick,
+      clickable: true,
       icon: (
         <svg
           className="w-8 h-8"
@@ -71,14 +120,16 @@ const MetricsGrid = ({ verifiedRevenueData, plannedRevenueData }) => {
       ),
     },
     {
-      title: "Revenue Growth",
+      title: t("metrics.revenueGrowth"),
       value: compareChange(
         verifiedRevenueData?.data?.previousMonthTotalRevenue,
         verifiedRevenueData?.data?.currentMonth?.revenue
       ),
-      gradient: "from-purple-600 via-purple-700 to-pink-700",
-      borderColor: "border-purple-500/20",
-      hoverShadow: "hover:shadow-purple-500/20",
+      gradient: "from-gray-700 via-gray-800 to-gray-900",
+      borderColor: "border-gray-300",
+      hoverShadow: "hover:shadow-gray-500/20",
+      clickable: false,
+      showGrowth: true,
       icon: (
         <svg
           className="w-8 h-8"

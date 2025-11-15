@@ -10,6 +10,7 @@ import EmployeeStats from "./pages/EmployeeStats";
 import ViewProperties from "./pages/ViewProperties";
 import Login from "./pages/Login";
 import Notification from "./components/common/Notification";
+import "./i18n";
 
 function App() {
   return (

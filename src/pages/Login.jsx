@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import signinBg from "@/assets/images/signin-bg.jpg";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,14 +44,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/10"></div>
-      <Card className="w-full max-w-md bg-white/95 backdrop-blur-sm shadow-2xl border-0 relative z-10">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${signinBg})`,
+        }}
+      ></div>
+      <div className="absolute inset-0 bg-black/40"></div>
+      <Card className="w-full max-w-md bg-white/95 backdrop-blur-sm shadow-2xl border-2 border-primary/20 relative z-10">
         <CardHeader className="space-y-1 pb-6">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center">
               <svg
-                className="w-8 h-8 text-white"
+                className="w-8 h-8 text-black"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -83,7 +90,7 @@ const Login = () => {
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="h-11 bg-gray-50 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                className="h-11 bg-gray-50 border-gray-300 focus:border-primary focus:ring-primary"
                 disabled={loading}
                 autoComplete="username"
               />
@@ -98,7 +105,7 @@ const Login = () => {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-11 bg-gray-50 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                className="h-11 bg-gray-50 border-gray-300 focus:border-primary focus:ring-primary"
                 disabled={loading}
                 autoComplete="current-password"
               />
@@ -110,13 +117,13 @@ const Login = () => {
             )}
             <Button
               type="submit"
-              className="w-full h-11 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+              className="w-full h-11 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-hover hover:to-primary text-black font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
               disabled={loading}
             >
               {loading ? (
                 <span className="flex items-center justify-center">
                   <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-black"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
